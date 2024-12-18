@@ -1,5 +1,5 @@
 {
-  "name": "HookFlow",
+  "name": "hookflow",
   "private": true,
   "scripts": {
     "build": "turbo build",
