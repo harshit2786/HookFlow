@@ -1,0 +1,14 @@
+[
+  {
+    "element": "Home",
+    "path": "/my"
+  },
+  {
+    "element": "SignIn",
+    "path" : "/sign-in"
+  },
+  {
+    "element": "SignUp",
+    "path" : "/sign-up"
+  }
+]

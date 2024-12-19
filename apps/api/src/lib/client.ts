@@ -1,3 +1,3 @@
-import { PrismaClient } from '@repo/db';
+import  { PrismaClient } from '@repo/db';
  
-const client = new PrismaClient();
+export const client = new PrismaClient();
