@@ -5,7 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  output = "../node_modules/@prisma/client"
+  output   = "../node_modules/@prisma/client"
   provider = "prisma-client-js"
 }
 
@@ -15,9 +15,61 @@ datasource db {
 }
 
 model User {
-  id        String     @id @default(uuid())
-  email     String     @unique
-  password  String
-  username  String
+  id       String @id @default(uuid())
+  email    String @unique
+  password String
+  username String
+  zaps     Zap[]
 }
 
+model Zap {
+  id        String   @id @default(uuid())
+  triggerId String   @unique
+  trigger   Trigger? @relation(fields: [triggerId], references: [id])
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  actions   Acions[]
+  zapRuns   ZapRun[]
+}
+
+model Trigger {
+  id     String            @id @default(uuid())
+  typeId String
+  type   AvailableTriggers @relation(fields: [typeId], references: [id])
+  zap    Zap?
+}
+
+model Acions {
+  id     String           @id @default(uuid())
+  typeId String
+  type   AvailableActions @relation(fields: [typeId], references: [id])
+  zapId  String
+  zap    Zap              @relation(fields: [zapId], references: [id])
+}
+
+model AvailableActions {
+  id      String   @id @default(uuid())
+  name    String
+  actions Acions[]
+}
+
+model AvailableTriggers {
+  id       String    @id @default(uuid())
+  name     String
+  triggers Trigger[]
+}
+
+model ZapRun {
+  id       String        @id @default(uuid())
+  time     String
+  zapId    String
+  metaData Json
+  zap      Zap           @relation(fields: [zapId], references: [id])
+  outbox   ZapRunOutbox?
+}
+
+model ZapRunOutbox {
+  id       String @id @default(uuid())
+  zapRunId String @unique
+  zapRun   ZapRun @relation(fields: [zapRunId], references: [id])
+}
