@@ -35,6 +35,7 @@ model Trigger {
 model Acions {
   id     String           @id @default(uuid())
   typeId String
+  order  Int              @default(0)
   type   AvailableActions @relation(fields: [typeId], references: [id])
   zapId  String
   zap    Zap              @relation(fields: [zapId], references: [id])
