@@ -19,8 +19,8 @@ model Zap {
   id          String   @id @default(uuid())
   name        String
   description String
-  triggerId   String   @unique
-  trigger     Trigger? @relation(fields: [triggerId], references: [id])
+  timeStamp   String
+  trigger     Trigger?
   userId      String
   user        User     @relation(fields: [userId], references: [id])
   actions     Acions[]
@@ -31,16 +31,18 @@ model Trigger {
   id     String            @id @default(uuid())
   typeId String
   type   AvailableTriggers @relation(fields: [typeId], references: [id])
-  zap    Zap?
+  zap    Zap               @relation(fields: [zapId], references: [id], onDelete: Cascade)
+  zapId  String            @unique
 }
 
 model Acions {
-  id     String           @id @default(uuid())
-  typeId String
-  order  Int              @default(0)
-  type   AvailableActions @relation(fields: [typeId], references: [id])
-  zapId  String
-  zap    Zap              @relation(fields: [zapId], references: [id])
+  id       String           @id @default(uuid())
+  typeId   String
+  order    Int              @default(0)
+  type     AvailableActions @relation(fields: [typeId], references: [id])
+  zapId    String
+  zap      Zap              @relation(fields: [zapId], references: [id] , onDelete: Cascade)
+  metaData Json
 }
 
 model AvailableActions {
