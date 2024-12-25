@@ -16,13 +16,15 @@ model User {
 }
 
 model Zap {
-  id        String   @id @default(uuid())
-  triggerId String   @unique
-  trigger   Trigger? @relation(fields: [triggerId], references: [id])
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  actions   Acions[]
-  zapRuns   ZapRun[]
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  triggerId   String   @unique
+  trigger     Trigger? @relation(fields: [triggerId], references: [id])
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  actions     Acions[]
+  zapRuns     ZapRun[]
 }
 
 model Trigger {
