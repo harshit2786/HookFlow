@@ -1,6 +1,5 @@
 import express, { Request, Response } from "express";
 import { client } from "../lib/client";
-import jwt from "jsonwebtoken";
 import "dotenv/config";
 import { z } from "zod";
 import { middlewareFunc } from "../middleware";
@@ -20,6 +19,7 @@ const ZapPostSchema = z.object({
 
 router.get('/', middlewareFunc, async (req: Request, res: Response) => {
     const id = req.userId as string;
+    console.log("id",id);
     try {
         const resp = await client.zap.findMany({
             where: {
@@ -101,6 +101,28 @@ router.post('/', middlewareFunc, async (req: Request, res: Response) => {
     }
 
 });
+
+router.get('/available-triggers', middlewareFunc , async(req : Request , res: Response) => {
+    try{
+        const resp = await client.availableTriggers.findMany();
+        res.json(resp);
+        return;
+    } catch(e){
+        console.log(e);
+        res.status(400).json({error : "Something went wrong"});
+    }
+})
+
+router.get('/available-actions', middlewareFunc , async(req : Request , res: Response) => {
+    try{
+        const resp = await client.availableActions.findMany();
+        res.json(resp);
+        return;
+    } catch(e){
+        console.log(e);
+        res.status(400).json({error : "Something went wrong"});
+    }
+})
 
 router.get('/:zapId', middlewareFunc, async (req: Request, res: Response) => {
     try {

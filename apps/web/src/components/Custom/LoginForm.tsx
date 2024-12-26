@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Lock, Mail, User } from 'lucide-react';
 import LoadingSpinner from './Spinner';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginForm({type} : {type : "in"| "up"}) {
   const [email, setEmail] = useState('');
@@ -9,7 +10,7 @@ export default function LoginForm({type} : {type : "in"| "up"}) {
   const [isLoading, setIsLoading] = useState(false);
   const [userName,setUserName] = useState("");
   const [rePass,setRePass] = useState('');
-
+  const navigate = useNavigate();
   const handleSignIn = async() => {
     if(email.trim() === "" || password.trim() === ""){
         return;
@@ -17,7 +18,8 @@ export default function LoginForm({type} : {type : "in"| "up"}) {
     try{
         setIsLoading(true);
         const resp = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/sign-in`,{email , password});
-        console.log(resp.data);
+        sessionStorage.setItem('userData', JSON.stringify(resp.data));
+        navigate('/');
     } catch(e){
         console.log(e)
     } finally {
@@ -32,14 +34,15 @@ export default function LoginForm({type} : {type : "in"| "up"}) {
     try{
         setIsLoading(true)
         const resp = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/sign-up`,{email , password , userName});
-        console.log(resp.data);
+        sessionStorage.setItem('userData', JSON.stringify(resp.data));
+        navigate('/');
     } catch(e){
         console.log(e)
     } finally {
         setIsLoading(false);
     }
   }
-
+  
   return (
     <div className="mt-8 space-y-6" >
       <div className="space-y-4">

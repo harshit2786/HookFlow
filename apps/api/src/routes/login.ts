@@ -34,7 +34,7 @@ router.post('/sign-in', async (req: Request, res: Response) => {
             }
             const id = resp?.id;
             const token = jwt.sign({ id, email: data.email }, secret);
-            res.status(200).json({ jwt: `Bearer ${token}`, id, email: data.email, userName: resp?.username });
+            res.status(200).json({ jwt:token, id, email: data.email, userName: resp?.username });
             return;
         } catch (e) {
             res.status(400).json({ message: "Some error Occured. Please try again later" })
@@ -64,7 +64,7 @@ router.post('/sign-up', async (req: Request, res: Response) => {
                 })
                 const id = resp2?.id;
                 const token = jwt.sign({ id, email: data.email }, secret);
-                res.status(200).json({ jwt: `Bearer ${token}`, id, email: data.email, userName: resp2?.username });
+                res.status(200).json({ jwt:token, id, email: data.email, userName: resp2?.username });
                 return;
             }
 
