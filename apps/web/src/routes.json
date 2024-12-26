@@ -1,7 +1,17 @@
 [
   {
     "element": "Home",
-    "path": "/"
+    "path": "/",
+    "nestedRoutes" : [
+      {
+        "element": "ZapList",
+        "path": "/"
+      },
+      {
+        "element": "CreateZap",
+        "path": "/create"
+      }
+    ]
   },
   {
     "element": "SignIn",

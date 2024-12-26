@@ -12,31 +12,31 @@ interface RouteInterface {
 }
 
 function App() {
-  const renderRoutes = (routes: RouteInterface[]) => {
+  const renderRoutes = (route: RouteInterface): JSX.Element => {
     return (
-      <Routes>
-        {routes.map((route, index) =>
-          route.nestedRoutes ? (
-            <Route
-              key={index}
-              element={React.createElement(getComponent(route.element))}
-              path={route.path}
-            >
-              {renderRoutes(route.nestedRoutes)}
-            </Route>
-          ) : (
-            <Route
-              key={index}
-              element={React.createElement(getComponent(route.element))}
-              path={route.path}
-            />
-          )
-        )}
-      </Routes>
+      <Route
+        element={React.createElement(getComponent(route.element))}
+        path={route.path}
+      >
+        {route.nestedRoutes && route.nestedRoutes.map((a) => renderRoutes(a))}
+      </Route>
     );
   };
-
-  return <BrowserRouter>{renderRoutes(rts as RouteInterface[])}</BrowserRouter>;
+  const renderAllRoutes = (routes : RouteInterface[]) : JSX.Element => {
+    return (
+      <Routes>
+        {routes.map((a) => renderRoutes(a))}
+      </Routes>
+    )
+  }
+  return (
+    <div className="dark" >
+      <BrowserRouter>
+      {renderAllRoutes(rts as RouteInterface[])}
+    </BrowserRouter>
+    </div>
+    
+  );
 }
 
 export default App;
