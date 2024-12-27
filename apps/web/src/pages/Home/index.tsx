@@ -10,9 +10,9 @@ const Home = () => {
     }
   },[navigate])
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-blue-900/50">
+    <div className="h-screen w-screen flex flex-col bg-gradient-to-br from-background via-background to-blue-900/50 overflow-y-auto ">
       <Navbar />
-      <main className="container mx-auto px-4 py-8">
+      <main className="container flex-1 overflow-y-auto">
         <Outlet/>
       </main>
     </div>
