@@ -34,7 +34,7 @@ function CustomTriggerNode({ data }: { data: InputTriggerData }) {
       </Dialog>
       <div
         onClick={() => setIsOpenTrigger(true)}
-        className="w-full border border-divider h-24 flex justify-center items-center cursor-pointer "
+        className="w-full bg-blue-950 text-gray-300 border-gray-500 border border-divider rounded-lg h-24 flex justify-center items-center cursor-pointer "
       >
         {data.data?.name ?? "Select a trigger"}
       </div>

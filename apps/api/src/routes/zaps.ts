@@ -19,7 +19,6 @@ const ZapPostSchema = z.object({
 
 router.get('/', middlewareFunc, async (req: Request, res: Response) => {
     const id = req.userId as string;
-    console.log("id",id);
     try {
         const resp = await client.zap.findMany({
             where: {
@@ -28,12 +27,14 @@ router.get('/', middlewareFunc, async (req: Request, res: Response) => {
             include: {
                 actions: {
                     select: {
+                        id : true,
                         type: true,
                         order: true
                     }
                 },
                 trigger: {
                     select: {
+                        id : true,
                         type: true,
                     }
                 }

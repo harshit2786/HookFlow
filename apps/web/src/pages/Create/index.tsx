@@ -9,6 +9,13 @@ import { ReactFlow, ConnectionLineType, useReactFlow } from "@xyflow/react";
 import { useEffect, useState } from "react";
 import dagre from "@dagrejs/dagre";
 import "@xyflow/react/dist/style.css";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogFooter, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 interface Node {
   id: string;
@@ -82,11 +89,31 @@ const getLayoutedElements = (nodes: Node[], edges: Edge[]) => {
 const CreateZap = () => {
   // const zapInstance = useRef(new Zap()).current;
   const { fitView } = useReactFlow();
+  const [name,setName] = useState('');
+  const [desc,setDesc] = useState('')
   const [trigger, setTrigger] = useState<null | Trigger>(null);
   const [actions, setActions] = useState<Action[]>([]);
   const [nodes, setNodes] = useState<FinalNode[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
-
+  const navigate = useNavigate();
+  const handleSubmit = async() => {
+    if(trigger === null || name === '' || desc === "" || actions.length === 0){
+      return;
+    }
+    try{
+      const payload = {
+      name,
+      description :desc,
+      triggerId : trigger.id,
+      actions : actions.map((a) => ({order : a.order, actionsId : a.id, metaData : a.metaData}))
+      }
+      const jwt = JSON.parse(sessionStorage.getItem("userData") ?? "{}")?.jwt;
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/zaps`, payload , {headers : {"Authorization" : `Bearer ${jwt}`}});
+      navigate('/');
+    } catch(e){
+      console.log(e)
+    }
+  }
   const addAction = (a: Action) => {
     const newActions = [...actions];
     if (a.order > newActions.length) {
@@ -166,7 +193,26 @@ const CreateZap = () => {
     return () => clearTimeout(time);
   }, [actions]);
   return (
-    <div className="h-full w-full flex flex-col bg-white">
+    <div className="relative h-full w-full flex flex-col">
+      <Dialog>
+        <DialogTrigger>
+        <Button className="absolute top-8 right-8 z-50" >Create Hook</Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogTitle>Create Hook</DialogTitle>
+          <div className="flex flex-col gap-8" >
+            <div className="flex gap-4 flex-col"  >
+              <Label>Name</Label>
+              <Input value={name} onChange={(e) => setName(e.target.value)} />
+            </div>
+            <div className="flex gap-4 flex-col"  >
+              <Label>Description</Label>
+              <Textarea value={desc} onChange={(e) => setDesc(e.target.value)} />
+            </div>
+          </div>
+          <DialogFooter><Button onClick={handleSubmit} >Submit</Button></DialogFooter>
+        </DialogContent>
+      </Dialog>
       <ReactFlow
         proOptions={{ hideAttribution: true }}
         nodes={nodes}

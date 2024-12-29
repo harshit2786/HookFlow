@@ -20,7 +20,6 @@ const AddAction = (props: ActionAdd | ActionUpdate) => {
   const [availableActions, setAvailableActions] = useState<AvailableActions[]>(
     []
   );
-  console.log(availableActions);
   const handleSelect = (a: AvailableActions) => {
     if (props.type === "add") {
       props.addAction({
