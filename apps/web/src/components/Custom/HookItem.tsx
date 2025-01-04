@@ -5,6 +5,7 @@ import { formatTimestampToDateString } from "@/lib/utils"
 import { DeleteDialog } from "./DeletDialog"
 import { useState } from "react"
 import axios from "axios"
+import { Badge } from "../ui/badge"
 
 const HookItem = ({zap} : {zap : Zap}) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -24,9 +25,9 @@ const HookItem = ({zap} : {zap : Zap}) => {
         <div className="flex items-center gap-4 mb-1">
           <h3 className="font-medium text-white">{zap.name}</h3>
           <div className="flex items-center gap-1" >
-          <div className="h-4 w-4 rounded-sm bg-white" ></div>
-          {zap.actions.map((_,index) => (
-            <div className="h-4 w-4 bg-white rounded-sm" key={index}/>
+          <Badge>{zap.trigger.name}</Badge>
+          {zap.actions.map((a,index) => (
+            <Badge key={index}>{a.name}</Badge>
           ))}
           </div>
           
