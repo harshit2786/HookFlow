@@ -10,6 +10,10 @@
       {
         "element": "CreateZap",
         "path": "/create"
+      },
+      {
+        "element" : "SingleZap",
+        "path" : "/my-zaps/:zapId"
       }
     ]
   },

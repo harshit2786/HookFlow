@@ -1,2 +1,2 @@
-export type Comp = "Home" | "SignIn" | "SignUp" | "CreateZap" | "ZapList";
+export type Comp = "Home" | "SignIn" | "SignUp" | "CreateZap" | "ZapList" | "SingleZap";
 

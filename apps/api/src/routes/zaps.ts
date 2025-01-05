@@ -137,6 +137,7 @@ router.get('/:zapId', middlewareFunc, async (req: Request, res: Response) => {
             include: {
                 actions: {
                     select: {
+                        id : true,
                         type: true,
                         order: true,
                         metaData: true
@@ -144,12 +145,35 @@ router.get('/:zapId', middlewareFunc, async (req: Request, res: Response) => {
                 },
                 trigger: {
                     select: {
+                        id : true,
                         type: true,
                     }
                 }
             }
         });
-        res.json({ data: resp });
+        if(!resp){
+            res.status(404).json({error : "This zap does not exist"});
+            return;
+        }
+        const respObj = {
+            id : resp.id,
+            name : resp.name,
+            description : resp.description,
+            timestamp : resp.timeStamp,
+            trigger : {
+                id : resp.trigger?.id,
+                name : resp.trigger?.type.name,
+                typeId : resp.trigger?.type.id
+            },
+            actions : resp.actions.map((a) => ({
+                id : a.id,
+                metadata : a.metaData,
+                order : a.order,
+                typeId : a.type.id,
+                typeName : a.type.name
+            }))
+        }
+        res.json({ data: respObj });
         return;
     } catch (e) {
         console.log(e);

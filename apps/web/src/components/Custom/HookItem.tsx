@@ -6,8 +6,10 @@ import { DeleteDialog } from "./DeletDialog"
 import { useState } from "react"
 import axios from "axios"
 import { Badge } from "../ui/badge"
+import { useNavigate } from "react-router-dom"
 
 const HookItem = ({zap} : {zap : Zap}) => {
+  const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
     const handleDelete = async() => {
         try{
@@ -19,12 +21,12 @@ const HookItem = ({zap} : {zap : Zap}) => {
         }
     }
   return (
-    <div className="flex items-center justify-between p-4 border-b last:border-0">
+    <div onClick={() => navigate(`/my-zaps/${zap.id}`)} className=" cursor-pointer flex items-center justify-between p-4 border-b last:border-0">
         <DeleteDialog onConfirm={handleDelete} hookName={zap.name} isOpen={isOpen} onClose={() => setIsOpen(false)}  />
       <div className="flex-1 min-w-0 mr-4">
         <div className="flex items-center gap-4 mb-1">
           <h3 className="font-medium text-white">{zap.name}</h3>
-          <div className="flex items-center gap-1" >
+          <div className="flex items-center gap-2" >
           <Badge>{zap.trigger.name}</Badge>
           {zap.actions.map((a,index) => (
             <Badge key={index}>{a.name}</Badge>
